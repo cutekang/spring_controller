@@ -1,6 +1,7 @@
 package com.app.controller.controller;
 
 import com.app.controller.domain.MemberVO;
+import com.app.controller.domain.ProductVO;
 import com.app.controller.mapper.MemberMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,7 @@ public class MemberController {
         Optional<MemberVO> foundMember = memberMapper.select(memberVO);
         if(foundMember.isPresent()){
             session.setAttribute("member", foundMember.get());
+            session.setAttribute("product", new ProductVO());
             return new RedirectView("/post/list");
         }
 
@@ -61,4 +63,13 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("login", false);
         return new RedirectView("/member/login");
     }
+
+//    로그아웃
+    @GetMapping("logout")
+    public RedirectView logout(){
+//        session.removeAttribute("member");
+        session.invalidate();
+        return new RedirectView("/member/login");
+    }
+
 }
